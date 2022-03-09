@@ -29,17 +29,33 @@ var getUserRepos = function (user) {
   var apiUrl = "https://api.github.com/users/" + user + "/repos";
 
   // make a request to the url
-  fetch(apiUrl).then(function (response) {
-    //turns response into JSON data
-    response.json().then(function (data) {
-      //these parameters will get passed through the function as repos, search term
-      displayRepos(data, user);
+  fetch(apiUrl)
+    .then(function (response) {
+      if (response.ok) {
+        //turns response into json data
+        response.json().then(function (data) {
+          displayRepos(data, user);
+        });
+        //if there is a 404 error
+      } else {
+        alert("Error: GitHub User Not Found");
+      }
+    })
+    //function to catch 500 errors
+    .catch(function (error) {
+      // Notice this `.catch()` getting chained onto the end of the `.then()` method
+      alert("Unable to connect to GitHub");
     });
-  });
 };
 
 //function to display repos u=on page
 var displayRepos = function (repos, searchTerm) {
+  // check if api returned any repos..since the data is stored in an array it checks for an empty array
+  if (repos.length === 0) {
+    //adds no repos found to repo container
+    repoContainerEl.textContent = "No repositories found.";
+    return;
+  }
   console.log(repos);
   console.log(searchTerm);
   // clear old content
@@ -62,7 +78,7 @@ var displayRepos = function (repos, searchTerm) {
     // append to container..adds span to each div
     repoEl.appendChild(titleEl);
 
-    // create a status element to display number off issues
+    // create a status element to display number off
     var statusEl = document.createElement("span");
     statusEl.classList = "flex-row align-center";
 
