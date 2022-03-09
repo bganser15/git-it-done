@@ -62,6 +62,26 @@ var displayRepos = function (repos, searchTerm) {
     // append to container..adds span to each div
     repoEl.appendChild(titleEl);
 
+    // create a status element to display number off issues
+    var statusEl = document.createElement("span");
+    statusEl.classList = "flex-row align-center";
+
+    // check if current repo has issues or not
+    if (repos[i].open_issues_count > 0) {
+      //sets  x icon
+      statusEl.innerHTML =
+        "<i class='fas fa-times status-icon icon-danger'></i>" +
+        repos[i].open_issues_count +
+        " issue(s)";
+    } else {
+      //sets check icon that there or no open repos
+      statusEl.innerHTML =
+        "<i class='fas fa-check-square status-icon icon-success'></i>";
+    }
+
+    // append to container
+    repoEl.appendChild(statusEl);
+
     // append container to the dom..adds each div to the main container
     repoContainerEl.appendChild(repoEl);
   }
