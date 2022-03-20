@@ -7,8 +7,14 @@ var getRepoName = function () {
   var queryString = document.location.search;
   //accesing index 1 in the array we created in our split query string
   var repoName = queryString.split("=")[1];
-  getRepoIssues(repoName);
-  repoNameEl.textContent = repoName;
+  //checks for valid repo name entered
+  if (repoName) {
+    repoNameEl.textContent = repoName;
+    getRepoIssues(repoName);
+  } else {
+    //redirects to index.html if invalid repo name
+    document.location.replace("./index.html");
+  }
 };
 var getRepoIssues = function (repo) {
   var apiUrl = "https://api.github.com/repos/" + repo + "/issues?direction=asc";
@@ -24,7 +30,8 @@ var getRepoIssues = function (repo) {
         }
       });
     } else {
-      alert("There was a problem with your request!");
+      //alert("There was a problem with your request!");
+      document.location.replace("./index.html");
     }
   });
   console.log(repo);
