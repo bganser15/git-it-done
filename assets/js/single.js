@@ -1,6 +1,15 @@
 var issueContainerEl = document.querySelector("#issues-container");
 var limitWarningEl = document.querySelector("#limit-warning");
 
+var repoNameEl = document.querySelector("#repo-name");
+var getRepoName = function () {
+  //accesses the search parameter in the url
+  var queryString = document.location.search;
+  //accesing index 1 in the array we created in our split query string
+  var repoName = queryString.split("=")[1];
+  getRepoIssues(repoName);
+  repoNameEl.textContent = repoName;
+};
 var getRepoIssues = function (repo) {
   var apiUrl = "https://api.github.com/repos/" + repo + "/issues?direction=asc";
   fetch(apiUrl).then(function (response) {
@@ -62,4 +71,5 @@ var displayWarning = function (repo) {
 };
 
 //adding the user and repo we want to access in getRepoIssues
-getRepoIssues("facebook/react");
+
+getRepoName();
